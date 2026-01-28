@@ -163,7 +163,7 @@ module Delayed
           # On MySQL >= 8.0.1 we leverage SKIP LOCK to avoid multiple workers blocking each other
           # when attempting to get the next available job
           # https://dev.mysql.com/doc/refman/8.0/en/innodb-locking-reads.html
-          if connection.send(:full_version).split('.').map(&:to_i).zip([8, 0, 1]).all? { |v, req| v >= req }
+          if connection.send(:full_version).split('.', 3).map(&:to_i).zip([8, 0, 1]).all? { |v, req| v >= req }
             quoted_table_name = connection.quote_table_name(table_name)
 
             # MySQL doesn't support LIMIT within a subquery so we select the id prior to the update
